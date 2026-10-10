@@ -1,0 +1,30 @@
+---
+const packages = [
+  { name: 'Starter', price: 'Rp300.000', source: 'Simple Landing Page', features: ['1 halaman landing page', 'Responsif', 'WA direct chat', 'SSL', 'Revisi 2x'] },
+  { name: 'Business', price: 'Rp1.000.000', source: 'Web Company Profile', popular: true, features: ['Beberapa halaman', '3 email bisnis', 'Revisi 3x', 'Garansi maintenance'] },
+  { name: 'E-Commerce', price: 'Rp3.000.000', source: 'Web E-commerce', features: ['Fitur toko lengkap', 'Payment gateway', 'Admin panel', 'Revisi 4x'] },
+];
+---
+<section id="pricing" class="pricing-tiers" aria-labelledby="pricing-tiers-heading">
+  <div class="container pricing-tiers-inner">
+    <p class="mono-label">[ INVESTASI DIGITAL ]</p>
+    <h2 id="pricing-tiers-heading">Pilih titik mulai yang paling masuk akal.</h2>
+    <p class="pricing-tiers-intro">Paket jelas untuk kebutuhan umum, ruang custom untuk target yang lebih spesifik.</p>
+    <div class="pricing-tiers-grid">
+      {packages.map((packageItem) => <article class:list={['pricing-tier', { 'pricing-tier-popular': packageItem.popular }]}>
+        {packageItem.popular && <span class="pricing-popular-badge">PALING POPULER</span>}
+        <p class="pricing-tier-source">{packageItem.source}</p>
+        <h3>{packageItem.name}</h3>
+        <p class="pricing-tier-price">{packageItem.price}</p>
+        <ul>{packageItem.features.map((feature) => <li><span aria-hidden="true">+</span>{feature}</li>)}</ul>
+        <a class="button button-primary pricing-tier-button" href={`https://wa.me/6285187732004?text=${encodeURIComponent(`Halo Matrix Sync, saya ingin memilih paket ${packageItem.name} (${packageItem.source}).`)}`} target="_blank" rel="noreferrer">Pilih Paket Ini <span aria-hidden="true">↗</span></a>
+      </article>)}
+      <article class="pricing-tier pricing-tier-custom">
+        <p class="pricing-tier-source">CUSTOM SCOPE</p>
+        <h3>Custom/Enterprise</h3>
+        <p class="pricing-custom-copy">Butuh sistem khusus? Konsultasi dulu.</p>
+        <a class="button button-primary pricing-tier-button" href="https://wa.me/6285187732004?text=Halo%20Matrix%20Sync%2C%20saya%20butuh%20sistem%20khusus%20dan%20ingin%20konsultasi." target="_blank" rel="noreferrer">Konsultasi via WA <span aria-hidden="true">↗</span></a>
+      </article>
+    </div>
+  </div>
+</section>

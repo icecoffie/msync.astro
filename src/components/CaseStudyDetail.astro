@@ -1,0 +1,60 @@
+---
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale: Locale;
+  project: {
+    data: {
+      title: string;
+      description: string;
+      image: string;
+      category: string;
+      external_url: string;
+      case_study_summary: string;
+    };
+  };
+}
+
+const { locale, project } = Astro.props;
+const data = project.data;
+const imageOverrides: Record<string, string> = {
+  'asset-core': '/projects/assetcore.webp',
+  'e-voste': '/projects/evoste.webp',
+  equitrack: '/projects/equitrack.webp',
+  hafar: '/projects/hafarr.webp',
+  'hpz-tdr': '/projects/hpz.webp',
+  labshare: '/projects/labshare.webp',
+  'resto-sagara-ikan': '/projects/sagaramck.webp',
+  'sagara-resto': '/projects/sagaramck.webp',
+  wangiloka: '/projects/wangiloka.webp',
+};
+const imagePath = imageOverrides[Astro.params.slug || ''];
+const isLiveUrl = data.external_url.startsWith('http');
+const copy = locale === 'id'
+  ? { back: '← Kembali ke studi kasus', label: 'Studi kasus', summary: 'Ringkasan proyek', live: 'Lihat Live Demo →', placeholder: 'Studi kasus segera hadir.' }
+  : { back: '← Back to case studies', label: 'Case study', summary: 'Project summary', live: 'View Live Demo →', placeholder: 'Case study coming soon.' };
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Matrix Sync Tech', item: locale === 'id' ? 'https://msync.web.id/' : 'https://msync.web.id/en/' },
+    { '@type': 'ListItem', position: 2, name: locale === 'id' ? 'Portofolio' : 'Portfolio', item: locale === 'id' ? 'https://msync.web.id/portofolio/' : 'https://msync.web.id/en/portfolio/' },
+    { '@type': 'ListItem', position: 3, name: data.title, item: Astro.url.href },
+  ],
+};
+---
+<main class="case-detail">
+  <div class="container case-detail-inner">
+    <a class="case-detail-back" href={locale === 'id' ? '/#work' : '/en/#work'}>{copy.back}</a>
+    <p class="mono-label">{copy.label} / {data.category}</p>
+    <h1>{data.title}</h1>
+    <p class="case-detail-description">{data.description.startsWith('[TODO:') ? copy.placeholder : data.description}</p>
+    <div class="case-detail-image-wrap" role="img" aria-label={`${data.title} project preview`}>
+      {imagePath && <img class="case-detail-image" src={imagePath} alt={`${data.title} project preview`} />}
+      <div class="case-detail-image-label"><span>{data.title}</span><small>{data.category}</small></div>
+    </div>
+    <div class="case-detail-summary"><p class="mono-label">{copy.summary}</p><p>{data.case_study_summary || copy.placeholder}</p></div>
+    {isLiveUrl && <a class="button button-primary" href={data.external_url} target="_blank" rel="noreferrer">{copy.live}</a>}
+  </div>
+</main>
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

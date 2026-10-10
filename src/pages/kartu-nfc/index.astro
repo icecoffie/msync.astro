@@ -1,0 +1,57 @@
+---
+import InnerPage from '../../components/InnerPage.astro';
+import NfcCards from '../../components/NfcCards.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { id as copy } from '../../i18n/id';
+import { getNfcCopy } from '../../data/nfc';
+
+const locale = 'id' as const;
+const nfc = getNfcCopy(locale);
+const alternates = { id: '/kartu-nfc/', en: '/en/nfc-cards/' };
+const seo = {
+  title: nfc.page.seoTitle,
+  description: nfc.page.seoDescription,
+  canonical: 'https://msync.web.id/kartu-nfc/',
+  ogTitle: 'Kartu NFC Review Bisnis + Sistem Aktivasi',
+  ogDescription: 'Paket kartu NFC review bisnis lengkap dengan domain, hosting, email bisnis, dan landing page.',
+  ogImage: 'https://msync.web.id/logo.webp',
+  twitterTitle: 'Kartu NFC Review Bisnis | Matrix Sync Tech',
+  twitterDescription: 'Sekali tap, pelanggan langsung kasih rating untuk bisnis kamu.',
+  keywords: nfc.page.keywords,
+};
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: nfc.page.faq.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })),
+};
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://msync.web.id/' },
+    { '@type': 'ListItem', position: 2, name: 'Kartu NFC Review', item: 'https://msync.web.id/kartu-nfc/' },
+  ],
+};
+---
+<InnerPage
+  locale={locale}
+  copy={copy}
+  seo={seo}
+  alternates={alternates}
+  eyebrow={nfc.page.heroEyebrow}
+  title={nfc.page.heroTitle}
+  intro={nfc.page.heroIntro}
+>
+  <NfcCards locale={locale} withSchema showHeading={false} />
+  <section class="faq-section" aria-labelledby="nfc-faq-heading">
+    <div class="container faq-inner">
+      <div class="faq-heading-row"><div><p class="mono-label">[ FAQ KARTU NFC ]</p><h2 id="nfc-faq-heading">{nfc.page.faqTitle}</h2></div></div>
+      <div class="faq-group">
+        {nfc.page.faq.map((item) => <details class="faq-item"><summary>{item.question}</summary><p>{item.answer}</p></details>)}
+      </div>
+    </div>
+  </section>
+  <FinalCta locale={locale} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+</InnerPage>

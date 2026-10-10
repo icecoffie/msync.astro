@@ -1,0 +1,41 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import type { Locale, SiteCopy } from '../i18n/types';
+import Preloader from '../components/Preloader.astro';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  copy: SiteCopy;
+}
+
+const { locale, copy } = Astro.props;
+const idUrl = 'https://msync.web.id/';
+const enUrl = 'https://msync.web.id/en/';
+const currentUrl = locale === 'id' ? idUrl : enUrl;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={copy.meta.description} />
+    <meta name="author" content="Matrix Sync Tech" />
+    <meta name="theme-color" content="#0A0A0A" />
+    <link rel="canonical" href={currentUrl} />
+    <link rel="alternate" hreflang="id" href={idUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={idUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Matrix Sync Tech" />
+    <meta property="og:title" content={copy.meta.ogTitle} />
+    <meta property="og:description" content={copy.meta.description} />
+    <meta property="og:url" content={currentUrl} />
+    <title>{copy.meta.title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <Preloader />
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,10 @@
+---
+import InnerPage from '../../../components/InnerPage.astro';
+import Contact from '../../../components/Contact.astro';
+import FinalCta from '../../../components/FinalCta.astro';
+import { en as copy } from '../../../i18n/en';
+const locale = 'en' as const;
+const alternates = { id: '/kontak/', en: '/en/contact/' };
+const seo = { title: 'Contact Matrix Sync | Web Development Consultation', description: 'Contact Matrix Sync for a free consultation about websites, custom applications, UI/UX, e-commerce, and digital growth.', canonical: 'https://msync.web.id/en/contact/', ogTitle: 'Contact Matrix Sync Tech', ogDescription: 'Tell us what your business needs to move forward.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Contact Matrix Sync', twitterDescription: 'Start a conversation about your next digital product.', keywords: 'hire web developer Indonesia, affordable web development agency' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ CONTACT ]" title="Tell us about the digital problem." intro="We will help you find the most useful shape for the solution."><Contact locale={locale} /><FinalCta locale={locale} /></InnerPage>

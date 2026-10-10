@@ -1,0 +1,10 @@
+---
+import InnerPage from '../../../components/InnerPage.astro';
+import ProblemSection from '../../../components/ProblemSection.astro';
+import AboutStats from '../../../components/AboutStats.astro';
+import { en as copy } from '../../../i18n/en';
+const locale = 'en' as const;
+const alternates = { id: '/tentang/', en: '/en/about/' };
+const seo = { title: 'About Matrix Sync | Indonesia Based Software Agency', description: 'Meet Matrix Sync, an Indonesia based software agency helping ambitious teams build clearer digital products.', canonical: 'https://msync.web.id/en/about/', ogTitle: 'About Matrix Sync Tech', ogDescription: 'A technology partner for businesses ready to grow with more clarity.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'About Matrix Sync Tech', twitterDescription: 'An Indonesia based software agency for serious digital products.', keywords: 'Indonesia based software agency, hire web developer Indonesia' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ ABOUT MATRIX SYNC ]" title="We connect strategy, design, and technology." intro="Matrix Sync helps businesses turn digital products into working assets, not just online decoration."><ProblemSection /><AboutStats locale={locale} /></InnerPage>

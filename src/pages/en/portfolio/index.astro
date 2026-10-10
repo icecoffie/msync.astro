@@ -1,0 +1,11 @@
+---
+import { getCollection } from 'astro:content';
+import InnerPage from '../../../components/InnerPage.astro';
+import CaseStudies from '../../../components/CaseStudies.astro';
+import { en as copy } from '../../../i18n/en';
+const locale = 'en' as const;
+const projects = await getCollection('projects');
+const alternates = { id: '/portofolio/', en: '/en/portfolio/' };
+const seo = { title: 'Web Development Portfolio | Matrix Sync Tech', description: 'Explore Matrix Sync projects across B2B websites, applications, UI/UX, SaaS, games, and e-commerce.', canonical: 'https://msync.web.id/en/portfolio/', ogTitle: 'Matrix Sync Tech Portfolio', ogDescription: 'Explore digital projects built by our team.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Matrix Sync Tech Portfolio', twitterDescription: 'Case studies and digital products from Matrix Sync.', keywords: 'custom web app development company, affordable web development agency, hire web developer Indonesia' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ PORTFOLIO ]" title="Work with a story behind it." intro="Explore business case studies and digital products built across industries and categories."><CaseStudies locale={locale} projects={projects.filter(({ data }) => data.category === 'b2b' || data.category === 'ecommerce')} /></InnerPage>

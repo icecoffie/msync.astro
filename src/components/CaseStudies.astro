@@ -1,0 +1,133 @@
+---
+import type { Locale } from '../i18n/types';
+
+interface Project {
+  id: string;
+  data: {
+    title: string;
+    description: string;
+    image: string;
+    category: 'b2b' | 'ecommerce' | 'game' | 'apps' | 'ui_ux' | 'saas';
+    external_url: string;
+    case_study_summary: string;
+  };
+}
+
+interface Props {
+  locale: Locale;
+  projects: Project[];
+}
+
+const { locale, projects } = Astro.props;
+const INITIAL_DISPLAY = 6; // Show 6 projects initially
+const labels = locale === 'id'
+  ? { eyebrow: '[ STUDI KASUS ]', title: 'Pekerjaan yang dibuat untuk tujuan nyata.', body: 'Lihat bagaimana kami mengubah kebutuhan bisnis menjadi pengalaman digital yang jelas dan siap berkembang.', all: 'Semua', b2b: 'B2B & Enterprise', ecommerce: 'E-Commerce', live: 'Lihat Live', showMore: 'Tampilkan Lebih Banyak', showLess: 'Tampilkan Lebih Sedikit' }
+  : { eyebrow: '[ CASE STUDIES ]', title: 'Work built around real outcomes.', body: 'See how we turn business needs into clear digital experiences built to grow.', all: 'All', b2b: 'B2B & Enterprise', ecommerce: 'E-Commerce', live: 'View Live', showMore: 'Show More', showLess: 'Show Less' };
+const detailBase = locale === 'id' ? '/portofolio' : '/en/portfolio';
+const imageOverrides: Record<string, string> = {
+  'asset-core': '/projects/assetcore.webp',
+  'e-voste': '/projects/evoste.webp',
+  equitrack: '/projects/equitrack.webp',
+  hafar: '/projects/hafarr.webp',
+  'hpz-tdr': '/projects/hpz.webp',
+  labshare: '/projects/labshare.webp',
+  'resto-sagara-ikan': '/projects/sagaramck.webp',
+  'sagara-resto': '/projects/sagaramck.webp',
+  wangiloka: '/projects/wangiloka.webp',
+};
+---
+<section id="work" class="case-studies" aria-labelledby="case-studies-heading">
+  <div class="container case-studies-inner">
+    <p class="mono-label">{labels.eyebrow}</p>
+    <h2 id="case-studies-heading">{labels.title}</h2>
+    <p class="case-studies-intro">{labels.body}</p>
+    <div class="case-window">
+      <div class="case-window-header" aria-hidden="true"><span class="case-window-dot case-window-dot-red"></span><span class="case-window-dot case-window-dot-yellow"></span><span class="case-window-dot case-window-dot-green"></span></div>
+      <div class="case-window-body">
+        <div class="case-study-tabs" role="tablist" aria-label={labels.eyebrow}>
+          <button class="case-study-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">{labels.all}</button>
+          <button class="case-study-tab" type="button" data-filter="b2b" role="tab" aria-selected="false">{labels.b2b}</button>
+          <button class="case-study-tab" type="button" data-filter="ecommerce" role="tab" aria-selected="false">{labels.ecommerce}</button>
+        </div>
+        <div class="case-study-list" id="case-study-list">
+          {projects.map(({ id, data }, index) => <article class="case-study-card" data-category={data.category} data-index={index} style={index >= INITIAL_DISPLAY ? 'display: none;' : ''}>
+            <a class="case-study-main" href={`${detailBase}/${id}`}>
+              <div class="case-study-image-wrap" role="img" aria-label={`${data.title} project preview`}>
+                {imageOverrides[id] && <img class="case-study-image" src={imageOverrides[id]} alt={`${data.title} project preview`} loading="lazy" />}
+                <div class="case-study-image-label"><span>{data.title}</span><small>{data.category}</small></div>
+              </div>
+              <div class="case-study-content"><span class="case-study-category">{data.category === 'b2b' ? labels.b2b : labels.ecommerce}</span><h3>{data.title}</h3><p>{data.description.startsWith('[TODO:') ? (locale === 'id' ? 'Studi kasus segera hadir.' : 'Case study coming soon.') : data.description}</p><span class="case-study-badge">Mobile Ready</span></div>
+            </a>
+            {data.external_url.startsWith('http') && <a class="case-study-live" href={data.external_url} target="_blank" rel="noreferrer">{labels.live} <span aria-hidden="true">→</span></a>}
+          </article>)}
+        </div>
+        {projects.length > INITIAL_DISPLAY && (
+          <div class="case-study-actions">
+            <button id="show-more-btn" class="button button-primary" type="button">{labels.showMore}</button>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const INITIAL_DISPLAY = 6;
+  const tabList = document.querySelectorAll<HTMLButtonElement>('.case-study-tab');
+  const cards = document.querySelectorAll<HTMLElement>('.case-study-card');
+  const showMoreBtn = document.getElementById('show-more-btn');
+  const caseStudyList = document.getElementById('case-study-list');
+  let isExpanded = false;
+
+  // Handle tab filtering
+  tabList.forEach((tab) => tab.addEventListener('click', () => {
+    const filter = tab.dataset.filter;
+    tabList.forEach((item) => { item.classList.toggle('is-active', item === tab); item.setAttribute('aria-selected', String(item === tab)); });
+    
+    // Reset expansion when filter changes
+    isExpanded = false;
+    if (showMoreBtn) {
+      showMoreBtn.textContent = document.documentElement.lang === 'id' ? 'Tampilkan Lebih Banyak' : 'Show More';
+    }
+
+    // Count visible cards after filtering
+    let visibleCount = 0;
+    cards.forEach((card, index) => {
+      const isMatching = filter === 'all' || card.dataset.category === filter;
+      if (isMatching) {
+        visibleCount++;
+        card.hidden = false;
+        card.style.display = visibleCount <= INITIAL_DISPLAY ? '' : 'none';
+      } else {
+        card.hidden = true;
+      }
+    });
+
+    // Update button visibility
+    if (showMoreBtn) {
+      showMoreBtn.style.display = visibleCount > INITIAL_DISPLAY ? 'block' : 'none';
+    }
+  }));
+
+  // Handle Show More button
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      const visibleCards = Array.from(cards).filter(card => !card.hidden);
+      
+      if (isExpanded) {
+        // Show all cards
+        visibleCards.forEach(card => { card.style.display = ''; });
+        showMoreBtn.textContent = document.documentElement.lang === 'id' ? 'Tampilkan Lebih Sedikit' : 'Show Less';
+      } else {
+        // Show only first INITIAL_DISPLAY cards
+        visibleCards.forEach((card, index) => {
+          card.style.display = index < INITIAL_DISPLAY ? '' : 'none';
+        });
+        showMoreBtn.textContent = document.documentElement.lang === 'id' ? 'Tampilkan Lebih Banyak' : 'Show More';
+        // Scroll to button smoothly
+        caseStudyList?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+</script>

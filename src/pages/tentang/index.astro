@@ -1,0 +1,10 @@
+---
+import InnerPage from '../../components/InnerPage.astro';
+import ProblemSection from '../../components/ProblemSection.astro';
+import AboutStats from '../../components/AboutStats.astro';
+import { id as copy } from '../../i18n/id';
+const locale = 'id' as const;
+const alternates = { id: '/tentang/', en: '/en/about/' };
+const seo = { title: 'Tentang Matrix Sync | Partner Teknologi Indonesia', description: 'Kenali Matrix Sync, partner teknologi Indonesia untuk website, aplikasi, UI/UX, dan pertumbuhan digital bisnis.', canonical: 'https://msync.web.id/tentang/', ogTitle: 'Tentang Matrix Sync Tech', ogDescription: 'Partner teknologi Indonesia untuk bisnis yang serius berkembang.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Tentang Matrix Sync Tech', twitterDescription: 'Partner teknologi untuk bisnis yang ingin bergerak lebih jelas.', keywords: 'jasa pembuatan website terpercaya, partner teknologi Indonesia' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ TENTANG MATRIX SYNC ]" title="Kami menyatukan strategi, desain, dan teknologi." intro="Matrix Sync membantu bisnis menjadikan produk digital sebagai aset yang bekerja, bukan sekadar halaman online."><ProblemSection /><AboutStats locale={locale} /></InnerPage>

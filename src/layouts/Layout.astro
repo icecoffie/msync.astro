@@ -1,0 +1,85 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyWhatsApp from '../components/StickyWhatsApp.astro';
+import type { Locale, SiteCopy } from '../i18n/types';
+import '../styles/global.css';
+
+interface SeoProps {
+  title: string;
+  description: string;
+  canonical: string;
+  ogTitle: string;
+  ogDescription: string;
+  ogImage: string;
+  twitterTitle: string;
+  twitterDescription: string;
+  keywords: string;
+}
+
+interface Props {
+  locale: Locale;
+  copy: SiteCopy;
+  seo: SeoProps;
+  alternates?: { id: string; en: string };
+}
+
+const { locale, copy, seo, alternates } = Astro.props;
+const idUrl = alternates ? `https://msync.web.id${alternates.id}` : 'https://msync.web.id/';
+const enUrl = alternates ? `https://msync.web.id${alternates.en}` : 'https://msync.web.id/en/';
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Matrix Sync Tech',
+  url: 'https://msync.web.id/',
+  logo: 'https://msync.web.id/logo.webp',
+  description: seo.description,
+  areaServed: [
+    { '@type': 'Country', name: 'Indonesia' },
+    { '@type': 'Place', name: 'International' },
+  ],
+  sameAs: [
+    'https://www.instagram.com/msync.tech',
+    'https://www.linkedin.com/company/msync',
+    'https://github.com/MSync-Tech',
+  ],
+};
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={seo.description} />
+    <meta name="keywords" content={seo.keywords} />
+    <meta name="author" content="Matrix Sync Tech" />
+    <meta name="theme-color" content="#0A0A0A" />
+    <link rel="icon" type="image/webp" href="/projects/logo.webp" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="canonical" href={seo.canonical} />
+    <link rel="alternate" hreflang="id" href={idUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={idUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Matrix Sync Tech" />
+    <meta property="og:title" content={seo.ogTitle} />
+    <meta property="og:description" content={seo.ogDescription} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:image" content={seo.ogImage} />
+    <meta property="og:image:alt" content={seo.ogTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seo.twitterTitle} />
+    <meta name="twitter:description" content={seo.twitterDescription} />
+    <meta name="twitter:image" content={seo.ogImage} />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <title>{seo.title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+  </head>
+  <body>
+    <Header locale={locale} />
+    <slot />
+    <Footer locale={locale} copy={copy} />
+    <StickyWhatsApp locale={locale} />
+  </body>
+</html>

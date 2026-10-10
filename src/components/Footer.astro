@@ -1,0 +1,41 @@
+---
+import type { Locale, SiteCopy } from '../i18n/types';
+
+interface Props { locale: Locale; copy: SiteCopy }
+const { locale, copy } = Astro.props;
+const footerLinks: [string, string][] = locale === 'id'
+  ? [
+      ['Jasa pembuatan website', '/layanan/'],
+      ['Kartu NFC review bisnis', '/kartu-nfc/'],
+      ['Harga & paket', '/harga/'],
+      ['Portofolio', '/portofolio/'],
+      ['Tentang kami', '/tentang/'],
+      ['Kontak', '/kontak/'],
+    ]
+  : [
+      ['Web development services', '/en/services/'],
+      ['NFC review cards', '/en/nfc-cards/'],
+      ['Pricing & packages', '/en/pricing/'],
+      ['Portfolio', '/en/portfolio/'],
+      ['About us', '/en/about/'],
+      ['Contact', '/en/contact/'],
+    ];
+const socialLinks = [
+  ['WhatsApp', 'https://wa.me/6285187732004', 'fa-brands fa-whatsapp'],
+  ['Instagram', 'https://www.instagram.com/msync.tech', 'fa-brands fa-instagram'],
+  ['LinkedIn', 'https://www.linkedin.com/company/msync', 'fa-brands fa-linkedin-in'],
+  ['Discord', 'https://discord.gg/DTKQ8SqxJC', 'fa-brands fa-discord'],
+  ['GitHub', 'https://github.com/MSync-Tech', 'fa-brands fa-github'],
+  ['X', 'https://x.com/msyncq', 'fa-brands fa-x-twitter'],
+  ['Dribbble', 'https://dribbble.com/msync', 'fa-brands fa-dribbble'],
+];
+---
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><a class="logo" href={locale === 'id' ? '/' : '/en/'}>MATRIX SYNC<span style="color: var(--blue)">.</span></a><p>{copy.footer.description}</p></div>
+    <nav class="footer-links" aria-label={locale === 'id' ? 'Tautan halaman' : 'Site links'}>
+      {footerLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+    </nav>
+    <div class="footer-right"><div class="social-links" aria-label="Social media">{socialLinks.map(([label, href, icon]) => <a href={href} target="_blank" rel="noreferrer" aria-label={label} title={label}><i class={icon} aria-hidden="true"></i></a>)}</div><small>{copy.footer.rights}</small></div>
+  </div>
+</footer>

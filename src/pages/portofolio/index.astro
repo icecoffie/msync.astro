@@ -1,0 +1,11 @@
+---
+import { getCollection } from 'astro:content';
+import InnerPage from '../../components/InnerPage.astro';
+import CaseStudies from '../../components/CaseStudies.astro';
+import { id as copy } from '../../i18n/id';
+const locale = 'id' as const;
+const projects = await getCollection('projects');
+const alternates = { id: '/portofolio/', en: '/en/portfolio/' };
+const seo = { title: 'Portofolio Website & Aplikasi | Matrix Sync Tech', description: 'Portofolio lengkap Matrix Sync: website, aplikasi, UI/UX, SaaS, game, dan e-commerce untuk klien dan eksperimen digital.', canonical: 'https://msync.web.id/portofolio/', ogTitle: 'Portofolio Matrix Sync Tech', ogDescription: 'Lihat project digital yang kami bangun.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Portofolio Matrix Sync Tech', twitterDescription: 'Case studies dan project digital Matrix Sync.', keywords: 'portofolio jasa website, jasa website e-commerce, custom web app development' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ PORTOFOLIO ]" title="Pekerjaan yang punya cerita di baliknya." intro="Jelajahi studi kasus bisnis dan project digital yang kami bangun dari berbagai kategori."><CaseStudies locale={locale} projects={projects.filter(({ data }) => data.category === 'b2b' || data.category === 'ecommerce')} /></InnerPage>

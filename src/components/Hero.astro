@@ -1,0 +1,315 @@
+---
+import type { Locale, SiteCopy } from '../i18n/types';
+
+interface Testimonial {
+  author_name: string;
+  author_role: string;
+  stars: number;
+  quote: string;
+}
+
+interface Props {
+  locale: Locale;
+  copy: SiteCopy;
+  testimonials: Testimonial[];
+}
+
+const { locale, copy, testimonials } = Astro.props;
+const isId = locale === 'id';
+
+const ctaLabel = isId ? 'Konsultasi Gratis' : 'Free Consultation';
+const caseLabel = isId ? 'Lihat Studi Kasus' : 'View Case Studies';
+const subline = isId
+  ? 'Jasa Pembuatan Website, Aplikasi & UI/UX Design untuk Bisnis yang Serius Berkembang.'
+  : 'Website, App & UI/UX Design Services for Businesses Ready to Grow Seriously.';
+
+const deck = isId ? [
+  { title: 'Hosting Anti Down',           desc: 'Infrastruktur fokus ke stabilitas, keamanan, dan performa.',    color: 'white', x: 60, y: 26, r: -8, py: -180, scz: 0.10 },
+  { title: 'Bikin Web Hitungan Hari',     desc: 'Scope jelas, eksekusi fokus. Jalan dalam hitungan hari.',       color: 'black', x: 82, y: 21, r:  9, py:   90, scz: 0.06 },
+  { title: 'Tampilan yang Bikin Betah',   desc: 'Interface yang bikin aksi berikutnya jelas dan orang engaged.', color: 'blue',  x: 72, y: 47, r: -5, py: -260, scz: 0.14 },
+  { title: 'Support Setelah Launch',      desc: 'Partner asli buat fix, maintenance, dan iterasi.',              color: 'white', x: 92, y: 54, r:  6, py:   40, scz: 0.05 },
+  { title: 'SEO Siap dari Awal',         desc: 'Fondasi teknis dan struktur konten siap ditemukan.',            color: 'white', x: 63, y: 72, r: -9, py: -120, scz: 0.09 },
+  { title: 'Cocok Buat B2B & Commerce',   desc: 'Produk digital sesuai tujuan bisnis dan customer journey.',     color: 'black', x: 84, y: 78, r:  7, py:  140, scz: 0.07 },
+  { title: 'Konsultasi Gratis Kapan Aja', desc: 'Bawa brief yang masih berantakan. Kita bantu cari titik awal.', color: 'white', x: 50, y: 88, r: -3, py: -200, scz: 0.11 },
+] : [
+  { title: 'Reliable Hosting',            desc: 'Focused on stability, security, and performance.',              color: 'white', x: 60, y: 26, r: -8, py: -180, scz: 0.10 },
+  { title: 'Ship in Days',                desc: 'Clear scope, focused execution. Moving in days.',               color: 'black', x: 82, y: 21, r:  9, py:   90, scz: 0.06 },
+  { title: 'View That Feels Good',        desc: 'Interfaces that make the next action obvious and keep people engaged.', color: 'blue', x: 72, y: 47, r: -5, py: -260, scz: 0.14 },
+  { title: 'Support After Launch',        desc: 'A real partner for fixes, maintenance, and iteration.',          color: 'white', x: 92, y: 54, r:  6, py:   40, scz: 0.05 },
+  { title: 'SEO Ready From Day One',      desc: 'Technical foundations and content structure ready to be found.',  color: 'white', x: 63, y: 72, r: -9, py: -120, scz: 0.09 },
+  { title: 'Built For B2B & Commerce',    desc: 'Digital products shaped around business goals and journeys.',     color: 'black', x: 84, y: 78, r:  7, py:  140, scz: 0.07 },
+  { title: 'Free Consultation Anytime',   desc: 'Bring the messy brief. We help you find a place to start.',       color: 'white', x: 50, y: 88, r: -3, py: -200, scz: 0.11 },
+];
+
+const quotePayload = testimonials.map(({ quote, author_name, author_role, stars }) => ({ quote, author_name, author_role, stars }));
+---
+
+<!-- ===== HERO (parallax, 1 layar, tidak di-pin) ===== -->
+<section class="hero2" id="hero" data-locale={locale} aria-label="Matrix Sync">
+  <!-- Preloader -->
+  <div class="hero2-preloader" id="hero2-preloader" aria-label="Loading Matrix Sync">
+    <img class="hero2-preloader-logo" src="/projects/logo.webp" alt="Matrix Sync" />
+    <div class="hero2-preloader-word"><span id="matrix-sync-text" class="hero2-sr">Matrix Sync</span></div>
+    <p>&gt;_ {isId ? 'Loading digital ecosystem...' : 'Loading digital ecosystem...'}</p>
+  </div>
+
+  <div class="hero2-scrim" id="hero2-scrim"></div>
+
+  <div class="hero2-cards" id="hero2-cards">
+    {deck.map((c, i) => (
+      <div
+        class={`hero2-card card-${c.color}`}
+        style={`left:${c.x}%;top:${c.y}%;--rot:${c.r}deg;`}
+        data-py={c.py}
+        data-scz={c.scz}
+        data-dx={c.x - 50}
+      >
+        <div class="card-float" style={`animation-delay:${(i % 5) * 0.6}s`}>
+          <div class="card-inner">
+            <div class="face front">
+              <div class="card-txt">{c.title}</div>
+              <div class="foot"><span class="mark"></span> Matrix Sync</div>
+            </div>
+            <div class="face back">
+              <div class="back-title">{c.title}</div>
+              <div class="back-desc">{c.desc}</div>
+              <div class="foot"><span class="mark"></span> Matrix Sync</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="hero2-head" id="hero2-head">
+    <p class="hero2-eyebrow">{copy.hero.eyebrow}</p>
+    <h1 class="hero2-title">MATRIX<br />SYNC</h1>
+    <div class="hero2-accentbar"></div>
+    <p class="hero2-sub">{subline}</p>
+    <p class="hero2-desc">{copy.hero.description}</p>
+    <div class="hero2-actions">
+      <a class="hero2-btn primary" href="https://wa.me/6285187732004" target="_blank" rel="noreferrer">{ctaLabel} <span aria-hidden="true">↗</span></a>
+      <a class="hero2-btn" href="#work">{caseLabel}</a>
+    </div>
+  </div>
+
+  <div class="hero2-hint" id="hero2-hint"><span>Scroll</span><span class="hint-line"></span></div>
+</section>
+
+<!-- ===== RATING STRIP di bawah parallax ===== -->
+<section class="hero2-ratings" id="hero2-ratings" data-quotes={JSON.stringify(quotePayload)}>
+  <svg class="rate-orn" viewBox="0 -15 40 100" fill="currentColor" aria-hidden="true"><path d="M14.6531 43.3923 C 10.9702 39.5527 6.11199 37.5154 1.17538 37.2803 C 0.548512 37.2803 0 37.7504 0 38.3773 C 0.156718 43.3139 2.03733 48.2505 5.7202 52.0117 C 9.40307 55.773 14.2613 57.8887 19.1979 58.1237 C 19.8248 58.1237 20.3733 57.6536 20.3733 57.0267 C 20.2166 52.0901 18.336 47.1535 14.6531 43.3923 Z"></path><path d="M18.885 24.0383 C 17.5529 18.8666 14.4186 14.7136 10.2655 12.0494 C 9.71702 11.736 9.01179 11.8927 8.69835 12.4412 C 6.34759 16.7509 5.564 21.9226 6.81774 27.0943 C 8.07148 32.266 11.2842 36.419 15.4372 39.0832 C 15.9857 39.3966 16.691 39.2399 17.0044 38.6914 C 19.4335 34.3817 20.2171 29.21 18.885 24.0383 Z"></path><path d="M33.6944 16.2795 C 35.1049 11.1862 34.478 5.93614 32.2056 1.54804 C 31.8922 0.999529 31.187 0.764452 30.6384 1.07789 C 26.4071 3.66373 23.116 7.73839 21.7055 12.8317 C 20.2951 17.925 20.9219 23.1751 23.1943 27.5632 C 23.5078 28.1117 24.213 28.3468 24.7615 28.0333 C 28.9145 25.5259 32.2051 21.4512 33.6944 16.2795 Z"></path><path d="M31.2658 75.2842 C 26.0942 76.6163 21.9411 79.7506 19.2769 83.9036 C 18.9635 84.4522 19.1202 85.1574 19.6687 85.4708 C 23.9785 87.8216 29.1502 88.6052 34.3218 87.3514 C 39.4935 86.0977 43.6465 82.885 46.3108 78.732 C 46.6242 78.1834 46.4675 77.4782 45.919 77.1648 C 41.6092 74.814 36.4375 73.9521 31.2658 75.2842 Z"></path><path d="M18.4934 61.6499 C 13.4001 60.2394 8.15001 60.8663 3.76191 63.1387 C 3.2134 63.4521 2.97832 64.1573 3.29176 64.7059 C 5.8776 68.9372 9.95226 72.2283 15.0456 73.6388 C 20.1389 75.0492 25.389 74.4224 29.7771 72.15 C 30.3256 71.8365 30.5606 71.1313 30.2472 70.5828 C 27.7397 66.4298 23.5867 63.1387 18.4934 61.6499 Z"></path></svg>
+  <div class="rate-quote" aria-live="polite">
+    <div class="rate-stars" id="rate-stars">★★★★★</div>
+    <p class="rate-text" id="rate-text">&ldquo;{isId ? 'Cepet, rapih, dan hasilnya di atas ekspektasi.' : 'Fast, clean, and beyond expectations.'}&rdquo;</p>
+    <small class="rate-author" id="rate-author">{isId ? 'Testimoni klien' : 'Client testimonial'}</small>
+  </div>
+  <svg class="rate-orn right" viewBox="0 -15 40 100" fill="currentColor" aria-hidden="true"><path d="M14.6531 43.3923 C 10.9702 39.5527 6.11199 37.5154 1.17538 37.2803 C 0.548512 37.2803 0 37.7504 0 38.3773 C 0.156718 43.3139 2.03733 48.2505 5.7202 52.0117 C 9.40307 55.773 14.2613 57.8887 19.1979 58.1237 C 19.8248 58.1237 20.3733 57.6536 20.3733 57.0267 C 20.2166 52.0901 18.336 47.1535 14.6531 43.3923 Z"></path><path d="M18.885 24.0383 C 17.5529 18.8666 14.4186 14.7136 10.2655 12.0494 C 9.71702 11.736 9.01179 11.8927 8.69835 12.4412 C 6.34759 16.7509 5.564 21.9226 6.81774 27.0943 C 8.07148 32.266 11.2842 36.419 15.4372 39.0832 C 15.9857 39.3966 16.691 39.2399 17.0044 38.6914 C 19.4335 34.3817 20.2171 29.21 18.885 24.0383 Z"></path><path d="M33.6944 16.2795 C 35.1049 11.1862 34.478 5.93614 32.2056 1.54804 C 31.8922 0.999529 31.187 0.764452 30.6384 1.07789 C 26.4071 3.66373 23.116 7.73839 21.7055 12.8317 C 20.2951 17.925 20.9219 23.1751 23.1943 27.5632 C 23.5078 28.1117 24.213 28.3468 24.7615 28.0333 C 28.9145 25.5259 32.2051 21.4512 33.6944 16.2795 Z"></path><path d="M31.2658 75.2842 C 26.0942 76.6163 21.9411 79.7506 19.2769 83.9036 C 18.9635 84.4522 19.1202 85.1574 19.6687 85.4708 C 23.9785 87.8216 29.1502 88.6052 34.3218 87.3514 C 39.4935 86.0977 43.6465 82.885 46.3108 78.732 C 46.6242 78.1834 46.4675 77.4782 45.919 77.1648 C 41.6092 74.814 36.4375 73.9521 31.2658 75.2842 Z"></path><path d="M18.4934 61.6499 C 13.4001 60.2394 8.15001 60.8663 3.76191 63.1387 C 3.2134 63.4521 2.97832 64.1573 3.29176 64.7059 C 5.8776 68.9372 9.95226 72.2283 15.0456 73.6388 C 20.1389 75.0492 25.389 74.4224 29.7771 72.15 C 30.3256 71.8365 30.5606 71.1313 30.2472 70.5828 C 27.7397 66.4298 23.5867 63.1387 18.4934 61.6499 Z"></path></svg>
+</section>
+
+<style>
+  .hero2 {
+    --accent: #2F69FF;
+    --bg: #0A0A0A;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    position: relative; height: 100vh; overflow: hidden;
+    background: var(--bg); color: #fff; font-family: var(--sans);
+  }
+  .hero2-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+  /* Preloader */
+  .hero2-preloader { position: absolute; inset: 0; z-index: 90; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: var(--bg); }
+  .hero2-preloader-logo { display: block; width: 54px; height: 54px; margin-bottom: 2px; object-fit: contain; }
+  .hero2-preloader.is-done { display: none; }
+  .hero2-preloader-word { font-size: clamp(34px, 6vw, 84px); font-weight: 800; letter-spacing: -.02em; }
+  .hero2-preloader-word :global(.matrix-letter) { display: inline-block; }
+  .hero2-preloader p { font-family: var(--mono); font-size: 13px; letter-spacing: .12em; color: var(--accent); }
+
+  .hero2-scrim { position: absolute; inset: 0; z-index: 15; pointer-events: none;
+    background: linear-gradient(90deg, var(--bg) 0%, var(--bg) 20%, rgba(10,10,10,.65) 40%, transparent 60%); }
+
+  /* Headline — dibiarkan lebih lebar supaya deskripsi memanjang ke samping, bukan ke bawah */
+  .hero2-head { position: absolute; top: 50%; left: 52px; z-index: 20; max-width: 52vw; transform: translateY(-50%); will-change: transform, opacity; }
+  .hero2-eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); margin: 0 0 16px; display: flex; align-items: center; gap: 8px; }
+  .hero2-eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+  .hero2-title { margin: 0; font-size: clamp(44px, 7vw, 116px); font-weight: 800; line-height: .9; letter-spacing: -.03em; }
+  .hero2-accentbar { width: 64px; height: 5px; background: var(--accent); border-radius: 3px; margin: 22px 0; }
+  .hero2-sub { margin: 0; font-size: clamp(15px, 1.25vw, 20px); font-weight: 600; max-width: 42ch; line-height: 1.4; }
+  .hero2-desc { margin: 12px 0 0; font-size: clamp(13px, 1vw, 16px); max-width: 52ch; color: #c9c9c9; line-height: 1.6; }
+  .hero2-actions { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero2-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; border-radius: 999px; font-weight: 800; font-size: 14px; text-decoration: none; border: 1px solid #333; color: #fff; background: transparent; transition: transform .2s, background .2s, border-color .2s; }
+  .hero2-btn:hover { transform: translateY(-2px); border-color: #666; }
+  .hero2-btn.primary { background: var(--accent); border-color: var(--accent); }
+  .hero2-btn.primary:hover { background: #1d54e6; border-color: #1d54e6; }
+
+  .hero2-cards { position: absolute; inset: 0; z-index: 10; }
+  .hero2-card {
+    position: absolute; width: clamp(150px, 15vw, 228px); aspect-ratio: 3 / 4.1;
+    --px: 0px; --py: 0px; --sc: 1;
+    transform: translate(-50%, -50%) translate(var(--px), var(--py)) scale(var(--sc)) rotate(var(--rot));
+    perspective: 1000px; cursor: pointer; will-change: transform, opacity;
+  }
+  .card-float { position: relative; width: 100%; height: 100%; animation: hero2-float 5s ease-in-out infinite; }
+  .card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateY(var(--flip, 0deg)) scale(var(--hv, 1)); transition: transform .55s cubic-bezier(.6,.05,.2,1); }
+  .hero2-card:hover { z-index: 40; }
+  .hero2-card:hover .card-inner { --hv: 1.06; }
+  .face { position: absolute; inset: 0; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 30px 60px -22px rgba(0,0,0,.7); }
+  .hero2-card:hover .face { box-shadow: 0 44px 90px -20px rgba(47,105,255,.35), 0 30px 60px -22px rgba(0,0,0,.8); }
+  .card-white .front { background: #fff; color: #0A0A0A; }
+  .card-white .back  { background: #0A0A0A; color: #fff; border: 1px solid #262626; }
+  .card-black .front { background: #0A0A0A; color: #fff; border: 1px solid #262626; }
+  .card-black .back  { background: #fff; color: #0A0A0A; }
+  .card-blue .front  { background: var(--accent); color: #fff; }
+  .card-blue .back   { background: #0A0A0A; color: #fff; border: 1px solid #24427f; }
+  .back { transform: rotateY(180deg); }
+  .card-txt { font-size: clamp(15px, 1.3vw, 22px); font-weight: 800; line-height: 1.12; letter-spacing: -.01em; }
+  .back-title { font-size: clamp(13px, 1.05vw, 17px); font-weight: 800; margin-bottom: 8px; }
+  .back-desc { font-size: clamp(11px, .82vw, 13px); font-weight: 500; line-height: 1.4; opacity: .92; }
+  .foot { margin-top: auto; display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .04em; opacity: .75; }
+  .mark { width: 14px; height: 11px; border-radius: 2px; background: currentColor; position: relative; flex: none; opacity: .85; }
+  .mark::after { content: ""; position: absolute; inset: 2px 5px 2px 2px; border: 1px solid var(--bg); border-radius: 1px; }
+
+  .hero2-hint { position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%); z-index: 20; font-family: var(--mono); font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: #7a7a7a; display: flex; flex-direction: column; align-items: center; gap: 8px; animation: hero2-bob 1.8s ease-in-out infinite; }
+  .hint-line { width: 1px; height: 26px; background: linear-gradient(#7a7a7a, transparent); }
+
+  /* Rating strip */
+  .hero2-ratings { --accent: #2F69FF; --bg: #0A0A0A; --mono: "JetBrains Mono", ui-monospace, monospace;
+    position: relative; z-index: 5; background: var(--bg); border-top: 1px solid #1a1a1a;
+    display: flex; align-items: center; justify-content: center; gap: 30px; padding: 60px 24px; color: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .rate-orn { width: 28px; height: auto; color: #fff; flex: none; opacity: .9; }
+  .rate-orn.right { transform: scaleX(-1); }
+  .rate-quote { text-align: center; max-width: 640px; min-width: min(640px, 70vw); }
+  .rate-stars { color: var(--accent); font-size: 16px; letter-spacing: 3px; }
+  .rate-text { font-size: clamp(18px, 2vw, 26px); font-weight: 700; line-height: 1.35; margin: 12px 0 8px; transition: opacity .4s ease, transform .4s ease; }
+  .rate-author { font-family: var(--mono); font-size: 12px; color: #8a8a8a; letter-spacing: .06em; transition: opacity .4s ease; }
+
+  @keyframes hero2-bob { 0%,100% { transform: translate(-50%,0); } 50% { transform: translate(-50%,6px); } }
+  @keyframes hero2-float { 0%,100% { transform: translateY(-5px); } 50% { transform: translateY(5px); } }
+
+  @media (max-width: 820px) {
+    .hero2-head { top: 54%; left: 24px; max-width: 88vw; }
+    .hero2-sub, .hero2-desc { max-width: 90vw; }
+    .hero2-card { width: 40vw; }
+    .hero2-scrim { background: linear-gradient(180deg, var(--bg) 0%, rgba(10,10,10,.7) 34%, transparent 62%); }
+    .hero2-ratings { flex-direction: row; gap: 8px; padding: 42px 12px; }
+    .rate-orn { display: block; width: 22px; opacity: .72; }
+    .rate-quote { min-width: 0; width: calc(100% - 60px); flex: 0 1 calc(100% - 60px); max-width: none; overflow: hidden; }
+    .rate-text { font-size: clamp(16px, 4.5vw, 20px); }
+    .hero2-title { font-size: clamp(48px, 16vw, 76px); }
+    .hero2-actions { margin-top: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero2-hint { display: none; }
+    .card-inner { transition: none; }
+    .card-float { animation: none; }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Preloader ---- */
+  const preloader = document.getElementById('hero2-preloader');
+  const textEl = document.getElementById('matrix-sync-text');
+  (function initPreloader() {
+    if (!textEl) return;
+    if (reduced) { textEl.classList.remove('hero2-sr'); textEl.textContent = 'MATRIX SYNC'; return; }
+    const chars = 'MATRIX SYNC'.split('');
+    textEl.innerHTML = ''; textEl.classList.remove('hero2-sr');
+    chars.forEach((ch, i) => {
+      const s = document.createElement('span');
+      s.textContent = ch === ' ' ? '\u00A0' : ch;
+      s.classList.add('matrix-letter');
+      s.style.opacity = '0'; s.style.transform = 'translateY(20px)';
+      textEl.appendChild(s);
+      gsap.to(s, { opacity: 1, y: 0, duration: .6, ease: 'back.out', delay: i * 0.07 });
+    });
+  })();
+  function hidePreloader() {
+    if (!preloader) return;
+    const delay = reduced ? 400 : 1300;
+    window.setTimeout(() => {
+      if (!reduced) gsap.to(preloader, { opacity: 0, duration: .5, ease: 'power2.inOut', onComplete: () => preloader.classList.add('is-done') });
+      else preloader.classList.add('is-done');
+    }, delay);
+  }
+  window.addEventListener('load', hidePreloader, { once: true });
+
+  /* ---- Parallax + flip ---- */
+  const cardEls = Array.from(document.querySelectorAll<HTMLElement>('.hero2-card'));
+  const head = document.getElementById('hero2-head');
+  const hint = document.getElementById('hero2-hint');
+  const scrim = document.getElementById('hero2-scrim');
+
+  const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
+  const smooth = (t: number) => t * t * (3 - 2 * t);
+
+  const cards = cardEls.map((el) => {
+    let flipped = false;
+    el.addEventListener('click', () => {
+      flipped = !flipped;
+      el.style.setProperty('--flip', flipped ? '180deg' : '0deg');
+    });
+    const dx = parseFloat(el.dataset.dx || '0');
+    return {
+      el,
+      py: parseFloat(el.dataset.py || '0'),
+      scz: parseFloat(el.dataset.scz || '0'),
+      px: (dx >= 0 ? 1 : -1) * (Math.abs(dx) * 0.9 + 20),
+    };
+  });
+
+  function render(p: number) {
+    cards.forEach((cd) => {
+      cd.el.style.setProperty('--py', (p * cd.py) + 'px');
+      cd.el.style.setProperty('--px', (p * cd.px) + 'px');
+      cd.el.style.setProperty('--sc', String(1 + p * cd.scz));
+      cd.el.style.opacity = String(1 - smooth(clamp((p - 0.75) / 0.25, 0, 1)));
+    });
+    if (head) {
+      head.style.transform = `translateY(calc(-50% - ${p * 50}px))`;
+      head.style.opacity = String(1 - smooth(clamp((p - 0.5) / 0.4, 0, 1)));
+    }
+    if (scrim) scrim.style.opacity = String(1 - smooth(clamp((p - 0.4) / 0.4, 0, 1)));
+    if (hint) hint.style.opacity = String(1 - smooth(clamp(p / 0.15, 0, 1)));
+  }
+
+  render(0);
+
+  if (!reduced) {
+    gsap.fromTo('.card-float', { opacity: 0 }, { opacity: 1, duration: .7, ease: 'power2.out', stagger: 0.08, delay: 0.15 });
+    ScrollTrigger.create({
+      trigger: '.hero2',
+      start: 'top top',
+      end: 'bottom top',   
+      scrub: 0.6,
+      onUpdate: (s) => render(s.progress),
+    });
+  }
+
+  const ratings = document.getElementById('hero2-ratings');
+  const rt = document.getElementById('rate-text');
+  const ra = document.getElementById('rate-author');
+  const rs = document.getElementById('rate-stars');
+  const quotes = JSON.parse(ratings?.dataset.quotes || '[]') as Array<{ quote: string; author_name: string; author_role: string; stars: number }>;
+  if (rt && ra && rs && quotes.length > 0) {
+    let ri = 0;
+    const setR = () => {
+      const q = quotes[ri];
+      rt.textContent = `\u201C${q.quote}\u201D`;
+      ra.textContent = `${q.author_name}, ${q.author_role}`;
+      rs.textContent = '★'.repeat(Math.max(0, Math.min(5, q.stars)));
+      ri = (ri + 1) % quotes.length;
+    };
+    setR();
+    if (!reduced) window.setInterval(() => {
+      rt.style.opacity = '0'; rt.style.transform = 'translateY(8px)'; ra.style.opacity = '0';
+      window.setTimeout(() => { setR(); rt.style.opacity = '1'; rt.style.transform = 'translateY(0)'; ra.style.opacity = '1'; }, 400);
+    }, 5000);
+  }
+</script>

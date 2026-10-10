@@ -1,0 +1,61 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Hero from '../../components/Hero.astro';
+import PartnersMarquee from '../../components/PartnersMarquee.astro';
+import ProblemSection from '../../components/ProblemSection.astro';
+import SolutionPillars from '../../components/SolutionPillars.astro';
+import AboutStats from '../../components/AboutStats.astro';
+import WhyChooseUs from '../../components/WhyChooseUs.astro';
+import TechStack from '../../components/TechStack.astro';
+import CaseStudies from '../../components/CaseStudies.astro';
+import Services from '../../components/Services.astro';
+import NfcCards from '../../components/NfcCards.astro';
+import PricingTiers from '../../components/PricingTiers.astro';
+import PricingCalculator from '../../components/PricingCalculator.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import Contact from '../../components/Contact.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { en as copy } from '../../i18n/en';
+import { getCollection } from 'astro:content';
+
+const locale = 'en' as const;
+const seo = {
+  title: 'Affordable Web Development & NFC Review Cards | Matrix Sync Tech',
+  description: 'An Indonesia based software agency for affordable web development, custom web app development, and an NFC review card activation system for businesses.',
+  canonical: 'https://msync.web.id/en/',
+  ogTitle: 'Affordable Web Development & NFC Review Cards',
+  ogDescription: 'Websites, custom applications, product design, and NFC review cards for teams ready to grow.',
+  ogImage: 'https://msync.web.id/logo.webp',
+  twitterTitle: 'Matrix Sync Tech | Digital Products for Growing Businesses',
+  twitterDescription: 'Build clearer websites and digital products with Matrix Sync Tech.',
+  keywords: 'affordable web development agency, custom web app development company, Indonesia based software agency, hire web developer Indonesia, outsource web development Southeast Asia, nfc review card, nfc card activation system, nfc google review card, tap to review card for business',
+};
+const caseStudies = (await getCollection('projects')).filter(({ data }) => data.category === 'b2b' || data.category === 'ecommerce');
+const featuredTestimonial = (await getCollection('testimonials'))[0];
+const testimonials = (await getCollection('testimonials')).map(({ data }) => data);
+---
+<Layout locale={locale} copy={copy} seo={seo}>
+  <div class="page-shell">
+    <main id="top">
+      <Hero locale={locale} copy={copy} testimonials={testimonials} />
+      <PartnersMarquee />
+      <ProblemSection />
+      <SolutionPillars />
+      <AboutStats locale={locale} />
+      <WhyChooseUs />
+      <TechStack />
+      <section id="about" class="section section-light"><div class="container split"><div><p class="mono-label">{copy.problem.eyebrow}</p><h2 class="display">{copy.problem.title}</h2></div><div><p class="body-copy">{copy.problem.body}</p><ul class="problem-list">{copy.problem.points.map((point) => <li>{point}</li>)}</ul></div></div></section>
+      <section class="section section-dark"><div class="container"><p class="mono-label">{copy.solution.eyebrow}</p><h2 class="display">{copy.solution.title}</h2><p class="body-copy">{copy.solution.body}</p><div class="card-grid" style="margin-top: 60px">{copy.solution.cards.map((card, index) => <article class="info-card"><p class="mono-label">0{index + 1}</p><h3>{card.title}</h3><p>{card.body}</p></article>)}</div></div></section>
+      <CaseStudies locale={locale} projects={caseStudies} />
+      <Services />
+      <NfcCards locale={locale} showPageLink />
+      <PricingTiers />
+      <PricingCalculator />
+      <Testimonials />
+      <FaqSection locale={locale} />
+      <Contact locale={locale} />
+      <FinalCta locale={locale} />
+    </main>
+  </div>
+</Layout>

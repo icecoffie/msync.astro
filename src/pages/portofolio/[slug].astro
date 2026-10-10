@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import CaseStudyDetail from '../../components/CaseStudyDetail.astro';
+import { id as copy } from '../../i18n/id';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.filter(({ data }) => data.category === 'b2b' || data.category === 'ecommerce').map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const seo = {
+  title: `${project.data.title} | Matrix Sync Tech`,
+  description: project.data.description,
+  canonical: `https://msync.web.id/portofolio/${project.id}`,
+  ogTitle: `${project.data.title} case study | Matrix Sync Tech`,
+  ogDescription: project.data.description,
+  ogImage: `https://msync.web.id${project.data.image}`,
+  twitterTitle: `${project.data.title} | Matrix Sync Tech`,
+  twitterDescription: project.data.description,
+  keywords: `jasa pembuatan website terpercaya, studi kasus ${project.data.title}, Matrix Sync Tech`,
+};
+---
+<Layout locale="id" copy={copy} seo={seo}><CaseStudyDetail locale="id" project={project} /></Layout>

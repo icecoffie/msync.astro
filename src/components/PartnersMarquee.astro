@@ -1,0 +1,18 @@
+---
+const partners = ['HAFAR', 'ASSET CORE', 'EQUITRACK', 'E-VOSTE', 'RUANG PULANG', 'HPZ TDR', 'WANGILOKA', 'SAGARA RESTO'];
+const forwardPartners = [...partners, ...partners];
+const reversePartners = [...partners.slice().reverse(), ...partners.slice().reverse()];
+---
+<section class="partners-marquee" aria-labelledby="partners-heading">
+  <h2 id="partners-heading" class="sr-only">Matrix Sync Tech partners</h2>
+  <div class="partners-marquee-window">
+    <div class="logo-slider logo-slider-forward" aria-hidden="true">
+      {forwardPartners.map((partner) => <span class="partner-wordmark">{partner}</span>)}
+    </div>
+  </div>
+  <div class="partners-marquee-window partners-marquee-window-reverse">
+    <div class="logo-slider logo-slider-reverse" aria-hidden="true">
+      {reversePartners.map((partner) => <span class="partner-wordmark">{partner}</span>)}
+    </div>
+  </div>
+</section>

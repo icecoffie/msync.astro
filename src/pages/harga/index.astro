@@ -1,0 +1,10 @@
+---
+import InnerPage from '../../components/InnerPage.astro';
+import PricingTiers from '../../components/PricingTiers.astro';
+import PricingCalculator from '../../components/PricingCalculator.astro';
+import { id as copy } from '../../i18n/id';
+const locale = 'id' as const;
+const alternates = { id: '/harga/', en: '/en/pricing/' };
+const seo = { title: 'Harga Jasa Website & Aplikasi | Matrix Sync Tech', description: 'Lihat harga awal jasa pembuatan website murah, company profile, e-commerce, aplikasi, dan layanan digital Matrix Sync.', canonical: 'https://msync.web.id/harga/', ogTitle: 'Harga Matrix Sync Tech', ogDescription: 'Paket transparan untuk website dan produk digital bisnis.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Harga Matrix Sync Tech', twitterDescription: 'Mulai dari scope yang masuk akal untuk bisnis Anda.', keywords: 'jasa pembuatan website murah, jasa bikin aplikasi murah, hosting murah Indonesia' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ HARGA ]" title="Mulai dengan scope yang masuk akal." intro="Paket awal yang transparan, lalu ruang custom untuk sistem yang lebih besar."><PricingTiers /><PricingCalculator /></InnerPage>

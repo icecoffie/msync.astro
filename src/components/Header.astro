@@ -1,0 +1,84 @@
+---
+import type { Locale } from '../i18n/types';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const labels = locale === 'id'
+  ? { about: 'Tentang', tech: 'Tech Stack', nfc: 'Kartu NFC', pricing: 'Harga', projects: 'Proyek', contact: 'Kontak', switch: 'EN' }
+  : { about: 'About', tech: 'Tech Stack', nfc: 'NFC Cards', pricing: 'Pricing', projects: 'Projects', contact: 'Contact', switch: 'ID' };
+const paths = locale === 'id'
+  ? { about: '/tentang/', tech: '/layanan/', nfc: '/kartu-nfc/', pricing: '/harga/', projects: '/portofolio/', careers: '/karier/', contact: '/kontak/' }
+  : { about: '/en/about/', tech: '/en/services/', nfc: '/en/nfc-cards/', pricing: '/en/pricing/', projects: '/en/portfolio/', careers: '/en/careers/', contact: '/en/contact/' };
+
+// Keep the language switch on the equivalent page instead of always jumping home.
+const localePairs: [string, string][] = [
+  ['/', '/en/'],
+  ['/tentang/', '/en/about/'],
+  ['/layanan/', '/en/services/'],
+  ['/kartu-nfc/', '/en/nfc-cards/'],
+  ['/harga/', '/en/pricing/'],
+  ['/portofolio/', '/en/portfolio/'],
+  ['/kontak/', '/en/contact/'],
+];
+const currentPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const pair = localePairs.find(([idPath, enPath]) => (locale === 'id' ? idPath : enPath) === currentPath);
+const languageHref = pair ? (locale === 'id' ? pair[1] : pair[0]) : locale === 'id' ? '/en/' : '/';
+---
+<header class="header nav-blur">
+  <nav class="container header-inner" aria-label={locale === 'id' ? 'Navigasi utama' : 'Primary navigation'}>
+    <a class="logo" href={locale === 'id' ? '/' : '/en/'} aria-label="Matrix Sync Tech"><img src="/projects/logo.webp" alt="Matrix Sync" /></a>
+    <button class="hamburger" type="button" aria-label={locale === 'id' ? 'Buka menu' : 'Open menu'} aria-expanded="false" aria-controls="site-menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-wrap" id="site-menu">
+      <div class="nav">
+        <a href={paths.about}>{labels.about}</a>
+        <a href={paths.tech}>{labels.tech}</a>
+        <a href={paths.nfc}>{labels.nfc}</a>
+        <a href={paths.pricing}>{labels.pricing}</a>
+        <a href={paths.projects}>{labels.projects}</a>
+        <a href={paths.contact}>{labels.contact}</a>
+        <a class="lang-link" href={languageHref} aria-label={locale === 'id' ? 'Switch to English' : 'Beralih ke Bahasa Indonesia'}>{labels.switch}</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  /* Hilangkan garis putih di bawah header (dari CSS global) */
+  .header {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+  .header::after,
+  .header::before {
+    display: none !important;
+    content: none !important;
+    border: 0 !important;
+  }
+  .logo { display: inline-flex; align-items: center; }
+  .logo img { display: block; width: 34px; height: 34px; object-fit: contain; }
+</style>
+
+<script>
+  const initHeader = () => {
+    const header = document.querySelector<HTMLElement>('.header');
+    const hamburger = header?.querySelector<HTMLButtonElement>('.hamburger');
+    const menu = header?.querySelector<HTMLElement>('#site-menu');
+    if (!hamburger || !menu || hamburger.dataset.bound === 'true') return;
+    hamburger.dataset.bound = 'true';
+    const closeMenu = () => {
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('is-open');
+    };
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      menu.classList.toggle('is-open', isOpen);
+    });
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+  };
+  initHeader();
+  document.addEventListener('astro:page-load', initHeader);
+</script>

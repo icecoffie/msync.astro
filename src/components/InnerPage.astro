@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type { Locale, SiteCopy } from '../i18n/types';
+
+interface Props { locale: Locale; copy: SiteCopy; seo: { title: string; description: string; canonical: string; ogTitle: string; ogDescription: string; ogImage: string; twitterTitle: string; twitterDescription: string; keywords: string }; eyebrow: string; title: string; intro: string; alternates?: { id: string; en: string } }
+const { locale, copy, seo, eyebrow, title, intro, alternates } = Astro.props;
+---
+<Layout locale={locale} copy={copy} seo={seo} alternates={alternates}>
+  <main class="inner-page">
+    <section class="inner-page-hero"><div class="container"><p class="mono-label">{eyebrow}</p><h1>{title}</h1><p>{intro}</p></div></section>
+    <slot />
+  </main>
+</Layout>

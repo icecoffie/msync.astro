@@ -1,0 +1,11 @@
+---
+import InnerPage from '../../components/InnerPage.astro';
+import Services from '../../components/Services.astro';
+import TechStack from '../../components/TechStack.astro';
+import WhyChooseUs from '../../components/WhyChooseUs.astro';
+import { id as copy } from '../../i18n/id';
+const locale = 'id' as const;
+const alternates = { id: '/layanan/', en: '/en/services/' };
+const seo = { title: 'Layanan Website, Aplikasi & UI/UX | Matrix Sync', description: 'Jasa pembuatan website company profile, aplikasi custom, UI/UX, e-commerce, cloud, dan security untuk bisnis Indonesia.', canonical: 'https://msync.web.id/layanan/', ogTitle: 'Layanan Digital Matrix Sync', ogDescription: 'Website, aplikasi, UI/UX, dan cloud security untuk bisnis.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Layanan Matrix Sync', twitterDescription: 'Bangun produk digital dengan partner teknologi yang jelas.', keywords: 'jasa pembuatan website company profile, jasa website e-commerce, jasa bikin aplikasi murah' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ LAYANAN ]" title="Pilih titik masuk untuk membuat bisnis bergerak." intro="Dari desain sampai deployment, kami membantu Anda membangun pengalaman digital yang mudah ditemukan, dipahami, dan dihubungi."><Services /><TechStack /><WhyChooseUs /></InnerPage>

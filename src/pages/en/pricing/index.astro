@@ -1,0 +1,10 @@
+---
+import InnerPage from '../../../components/InnerPage.astro';
+import PricingTiers from '../../../components/PricingTiers.astro';
+import PricingCalculator from '../../../components/PricingCalculator.astro';
+import { en as copy } from '../../../i18n/en';
+const locale = 'en' as const;
+const alternates = { id: '/harga/', en: '/en/pricing/' };
+const seo = { title: 'Web Development Pricing | Matrix Sync Tech', description: 'Explore starting prices for affordable web development, custom applications, e-commerce, and digital product services.', canonical: 'https://msync.web.id/en/pricing/', ogTitle: 'Matrix Sync Tech Pricing', ogDescription: 'Transparent starting points for digital products and websites.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Matrix Sync Tech Pricing', twitterDescription: 'Start with a sensible scope for your next digital product.', keywords: 'affordable web development agency, custom web app development company' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ PRICING ]" title="Start with a scope that makes sense." intro="Transparent starting points, with room for a custom system when the brief gets bigger."><PricingTiers /><PricingCalculator /></InnerPage>

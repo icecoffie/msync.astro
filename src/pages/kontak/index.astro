@@ -1,0 +1,10 @@
+---
+import InnerPage from '../../components/InnerPage.astro';
+import Contact from '../../components/Contact.astro';
+import FinalCta from '../../components/FinalCta.astro';
+import { id as copy } from '../../i18n/id';
+const locale = 'id' as const;
+const alternates = { id: '/kontak/', en: '/en/contact/' };
+const seo = { title: 'Kontak Matrix Sync | Konsultasi Website & Aplikasi', description: 'Hubungi Matrix Sync untuk konsultasi gratis tentang website, aplikasi, UI/UX, e-commerce, dan kebutuhan digital bisnis.', canonical: 'https://msync.web.id/kontak/', ogTitle: 'Hubungi Matrix Sync Tech', ogDescription: 'Ceritakan kebutuhan digital bisnis Anda.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Kontak Matrix Sync', twitterDescription: 'Mulai konsultasi website dan aplikasi Anda.', keywords: 'konsultasi jasa website, jasa pembuatan website terpercaya' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ KONTAK ]" title="Ceritakan masalah digitalmu." intro="Kami akan membantu mencari bentuk solusi yang paling masuk akal untuk bisnis kamu."><Contact locale={locale} /><FinalCta locale={locale} /></InnerPage>

@@ -1,0 +1,73 @@
+---
+import type { Locale } from '../i18n/types';
+
+interface FaqItem { question: string; answer: string }
+interface Props { locale?: Locale }
+
+const { locale = 'id' } = Astro.props;
+const seriousFaq: FaqItem[] = locale === 'id' ? [
+  { question: 'Website saya nanti bisa ranking di Google gak?', answer: 'Kami membangun fondasi SEO-ready: struktur halaman, metadata, heading, performa, dan konten yang membantu mesin pencari memahami bisnis Anda. Ranking tetap dipengaruhi kualitas konten, kompetisi, dan konsistensi setelah launch.' },
+  { question: 'Bagaimana kalau saya belum punya domain dan hosting?', answer: 'Tidak masalah. Kami bisa membantu memilih, membeli, dan menyiapkan domain serta hosting yang sesuai dengan kebutuhan dan anggaran proyek Anda.' },
+  { question: 'Websitenya bisa saya edit sendiri setelah selesai?', answer: 'Bisa. Kami dapat menyiapkan CMS atau dashboard yang memungkinkan Anda mengelola konten, portofolio, dan artikel tanpa harus selalu kembali ke developer.' },
+  { question: 'Pembayaran jasanya bisa dicicil?', answer: 'Untuk proyek tertentu, pembayaran dapat dibagi berdasarkan milestone. Detail jadwal pembayaran dibicarakan dan disepakati sebelum pengerjaan dimulai.' },
+  { question: 'Layanannya udah termasuk copywriting konten?', answer: 'Copywriting dapat ditambahkan sesuai kebutuhan. Kami membantu menyusun pesan agar layanan, keunggulan, dan ajakan bertindak lebih mudah dipahami.' },
+  { question: 'Bisa diintegrasikan dengan WhatsApp dan CRM?', answer: 'Bisa. Website dapat dihubungkan dengan WhatsApp, form inquiry, email, analytics, dan CRM sesuai alur kerja bisnis Anda.' },
+  { question: 'Ada biaya tersembunyi setelah website diluncurkan?', answer: 'Tidak ada biaya tersembunyi. Biaya domain, hosting, layanan pihak ketiga, maintenance, atau pekerjaan tambahan akan dijelaskan sebelum disetujui.' },
+] : [
+  { question: 'Can my website rank on Google?', answer: 'We build an SEO-ready foundation with clean structure, metadata, headings, performance, and content guidance. Rankings still depend on content quality, competition, and consistent work after launch.' },
+  { question: 'What if I do not have a domain or hosting yet?', answer: 'That is fine. We can help you choose, purchase, and set up a domain and hosting plan that fits your project and budget.' },
+  { question: 'Can I edit the website myself after launch?', answer: 'Yes. We can provide a CMS or dashboard so your team can manage content, portfolio entries, and articles without always returning to a developer.' },
+  { question: 'Can I pay for the service in installments?', answer: 'For selected projects, payments can be split by milestone. The schedule is agreed before work begins.' },
+  { question: 'Does the service include content copywriting?', answer: 'Copywriting can be added when needed. We help clarify your offer, differentiators, and calls to action.' },
+  { question: 'Can you integrate WhatsApp and a CRM?', answer: 'Yes. We can connect WhatsApp, inquiry forms, email, analytics, and CRM tools around your existing workflow.' },
+  { question: 'Are there hidden costs after launch?', answer: 'No hidden costs. Domain, hosting, third-party services, maintenance, and extra work are explained before approval.' },
+];
+const processFaq: FaqItem[] = locale === 'id' ? [
+  { question: 'Bagaimana cara memulai?', answer: 'Gampang! Pilih layanan, isi form, lalu kita diskusikan detail dan teknisnya langsung via WhatsApp.' },
+  { question: 'Cara pembayaran?', answer: 'Bisa lewat transfer bank lokal, e-wallet, atau crypto. Wajib DP 50% dulu biar kerjaan langsung jalan.' },
+  { question: 'Bagaimana jika sudah punya domain + hosting?', answer: 'Bisa banget! Kasih akses loginnya aja, dan tim kami bakal langsung setup dan deploy di server kamu.' },
+  { question: 'Bisa update web sendiri setelah buat?', answer: 'Tentu. Kami sediakan dashboard admin (CMS) biar kamu gampang ganti konten tanpa harus ngerti coding.' },
+  { question: 'Untuk client diluar Indonesia gimana?', answer: 'Aman bosku. Kami terbiasa handle klien global, pembayaran gampang bisa via Wise, Stripe, dll.' },
+  { question: 'Revisi gratis atau bayar lagi?', answer: 'Revisi gratis sesuai kesepakatan dan paket yang kamu pilih.' },
+  { question: 'Kalau mau nambah revisi di luar itu gimana?', answer: 'Kalau di luar kesepakatan, ada biaya tambahan. Gaada yang gratis brok' },
+] : [
+  { question: 'How do I start?', answer: 'Choose a service, fill in the form, and we will discuss the details and technical direction via WhatsApp.' },
+  { question: 'How does payment work?', answer: 'We accept bank transfers, e-wallets, or crypto. A 50% deposit starts the work.' },
+  { question: 'What if I already have a domain and hosting?', answer: 'No problem. Share access securely and we can set up and deploy on your existing server.' },
+  { question: 'Can I update the website myself?', answer: 'Yes. We can provide an admin dashboard so you can change content without coding.' },
+  { question: 'What about clients outside Indonesia?', answer: 'We handle global clients and can process payments through services such as Wise or Stripe.' },
+  { question: 'Are revisions free?', answer: 'Revisions are free when they match the agreed scope and selected package.' },
+  { question: 'What if I need revisions outside the agreement?', answer: 'Work outside the agreed scope is charged separately.' },
+];
+const randomFaq: FaqItem[] = [
+  { question: 'Konsep lo aneh, tapi gue suka. Boleh kerja di sana?', answer: 'Kemungkinan besar nggak. Aplikasi yang masuk banyak banget. Setidaknya kita jujur, nggak kayak mantan kamu.' },
+  { question: 'Emang semua ini... legal?', answer: "Kita beroperasi di area <a href='https://icedrive.net/s/5Nbtz67F51XFGQQQQ1ZChY3uByax' target='_blank' rel='noreferrer' class='faq-inline-link'>Planet Bekasi</a>. Pengacara kita lagi sibuk banget." },
+  { question: 'Apa rahasia kesuksesan kalian?', answer: 'Kopi Americano extra 6 shot sama Indomie Ayam Bawang, plus nggak peduli sama cara berpikir konvensional. Oh iya, lead dev kita juga ditenagai sama dendam kesumat.' },
+  { question: 'Gue ada komplain.', answer: 'Dan gue lagi pusing. Kayaknya kita sama-sama punya masalah.' },
+  { question: 'Ide-ide gila ini dari mana?', answer: 'Kita adain ritual sekte, nanya saran ke hantu, terus kita lakuin kebalikannya. Berhasil terus!' },
+  { question: 'Gue cinta kalian.', answer: 'Kita juga cinta kamu.' },
+];
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: seriousFaq.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })),
+};
+---
+<section id="faq" class="faq-section" aria-labelledby="faq-heading">
+  <div class="container faq-inner">
+    <div class="faq-heading-row"><div><p class="mono-label">[ FAQ ]</p><h2 id="faq-heading">Beberapa pertanyaan aneh.</h2></div><button class="button faq-expand" type="button" data-faq-expand>Expand All</button></div>
+    <div class="faq-group"><p class="faq-group-label">01 / FAQ Bisnis Serius</p>{seriousFaq.map((item) => <details class="faq-item"><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>
+    <div class="faq-group"><p class="faq-group-label">02 / FAQ Proses Kerja</p>{processFaq.map((item) => <details class="faq-item"><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>
+    <div class="faq-group faq-group-random"><p class="faq-group-label">03 / Sebelum Kamu Pergi, Beberapa Pertanyaan Random</p>{randomFaq.map((item) => <details class="faq-item"><summary>{item.question}</summary><p set:html={item.answer}></p></details>)}</div>
+  </div>
+</section>
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+<script>
+  const expandButton = document.querySelector<HTMLButtonElement>('[data-faq-expand]');
+  const faqItems = Array.from(document.querySelectorAll<HTMLDetailsElement>('.faq-item'));
+  expandButton?.addEventListener('click', () => {
+    const shouldExpand = faqItems.some((item) => !item.open);
+    faqItems.forEach((item) => { item.open = shouldExpand; });
+    if (expandButton) expandButton.textContent = shouldExpand ? 'Collapse All' : 'Expand All';
+  });
+</script>

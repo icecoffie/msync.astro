@@ -1,0 +1,115 @@
+---
+import { pricingOptions, pricingServices, workOptions } from '../data/pricing';
+
+const mainServices = pricingServices.filter((service) => !service.isAddon);
+const addons = pricingServices.filter((service) => service.isAddon);
+---
+<section class="pricing-calculator" data-pricing-calculator aria-labelledby="pricing-calculator-heading">
+  <div class="container pricing-calculator-inner">
+    <p class="mono-label">[ CUSTOM ORDER ]</p>
+    <h2 id="pricing-calculator-heading">Butuh Kombinasi Custom? Coba Kalkulator Ini</h2>
+    <div class="pricing-calculator-layout">
+      <div class="pricing-calculator-form-wrap">
+        <p class="pricing-calculator-intro">Fill in Your Task Details Here, So Admin Can Understand Immediately!</p>
+        <form class="pricing-calculator-form" novalidate>
+          <div class="pricing-form-grid">
+            <label>Nickname<input data-name type="text" placeholder="e.g. Skala" required /></label>
+            <label>Service Category<select data-service required><optgroup label="Main Services">{mainServices.map((service) => <option value={service.key}>{service.name}</option>)}</optgroup><optgroup label="Add-ons">{addons.map((service) => <option value={service.key}>{service.name}</option>)}</optgroup></select></label>
+          </div>
+          <div class="pricing-form-grid">
+            <label>Work Option<select data-work>{workOptions.map((option, index) => <option value={index}>{option.name} ({option.days})</option>)}</select></label>
+            <div class="pricing-custom-select-wrap"><span class="pricing-label">Pricing Option</span><button class="pricing-custom-select" type="button" data-pricing-display aria-expanded="false"><span data-pricing-selected></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button><select class="pricing-hidden-select" data-pricing-select aria-hidden="true" tabindex="-1">{pricingOptions.map((option, index) => <option value={index}>{option.name}</option>)}</select><ul class="pricing-option-list" data-pricing-list hidden>{pricingOptions.map((option, index) => <li tabindex="-1" role="option" data-value={index}><i class={option.icon} aria-hidden="true"></i>{option.name}</li>)}</ul></div>
+          </div>
+          <label>Task Detail / Brief<textarea data-detail rows="5" placeholder="Tell us what you need, goals, references, deadlines, etc." required></textarea></label>
+          <label>Material Link (GDRIVE/DOCS)<input data-link type="url" placeholder="https://..." /></label>
+          <p class="pricing-calculator-note">Our Admin Will Check It Fast.</p>
+          <button class="button button-primary pricing-submit" type="button" data-whatsapp>Consult on WhatsApp ↗</button>
+          <p class="pricing-validation" data-validation role="alert" hidden>Please fill in your name and task details first.</p>
+        </form>
+      </div>
+      <aside class="pricing-summary" aria-live="polite">
+        <h3>Order Summary</h3>
+        <dl><div><dt>Category</dt><dd data-summary-category>---</dd></div><div><dt>Price (Start From)</dt><dd data-summary-price>---</dd></div><div><dt>Work Mode</dt><dd data-summary-mode>---</dd></div><div class="pricing-summary-total"><dt>Total Est. Price</dt><dd data-summary-total>---</dd></div></dl>
+        <div class="pricing-table-wrap"><h3>Service &amp; Price List</h3><table><thead><tr><th>Service</th><th>Price (Start)</th></tr></thead><tbody>{pricingServices.map((service) => <tr><td>{service.name}</td><td>{new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(service.basePrice)}</td></tr>)}</tbody></table></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { pricingOptions, pricingServices, workOptions } from '../data/pricing';
+
+  const start = () => {
+    const root = document.querySelector<HTMLElement>('[data-pricing-calculator]');
+    if (!root || root.dataset.initialized) return;
+    root.dataset.initialized = 'true';
+    const serviceSelect = root.querySelector<HTMLSelectElement>('[data-service]');
+    const pricingSelect = root.querySelector<HTMLSelectElement>('[data-pricing-select]');
+    const workSelect = root.querySelector<HTMLSelectElement>('[data-work]');
+    const nameInput = root.querySelector<HTMLInputElement>('[data-name]');
+    const detailInput = root.querySelector<HTMLTextAreaElement>('[data-detail]');
+    const linkInput = root.querySelector<HTMLInputElement>('[data-link]');
+    const display = root.querySelector<HTMLButtonElement>('[data-pricing-display]');
+    const selectedText = root.querySelector<HTMLElement>('[data-pricing-selected]');
+    const optionList = root.querySelector<HTMLUListElement>('[data-pricing-list]');
+    const validation = root.querySelector<HTMLElement>('[data-validation]');
+    const whatsappButton = root.querySelector<HTMLButtonElement>('[data-whatsapp]');
+    if (!serviceSelect || !pricingSelect || !workSelect || !nameInput || !detailInput || !linkInput || !display || !selectedText || !optionList || !validation || !whatsappButton) return;
+
+    const formatCurrency = (amount: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
+    let dropdownOpen = false;
+    let currentOrder = { service: '', workOption: '', finalPrice: '---' };
+
+    const updateDisplay = (index: number) => {
+      const option = pricingOptions[index];
+      selectedText.innerHTML = `<i class="${option.icon}" aria-hidden="true"></i><span>${option.name}</span>`;
+      pricingSelect.value = String(index);
+      optionList.querySelectorAll('li').forEach((item) => { const selected = item.dataset.value === String(index); item.classList.toggle('is-active', selected); item.setAttribute('aria-selected', String(selected)); });
+    };
+    const toggleDropdown = (open?: boolean) => { dropdownOpen = open ?? !dropdownOpen; optionList.hidden = !dropdownOpen; display.setAttribute('aria-expanded', String(dropdownOpen)); };
+    updateDisplay(0);
+    display.addEventListener('click', () => toggleDropdown());
+    optionList.querySelectorAll('li').forEach((item) => item.addEventListener('click', () => {
+      updateDisplay(Number(item.dataset.value));
+      pricingSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      toggleDropdown(false);
+    }));
+    document.addEventListener('click', (event) => { if (dropdownOpen && !display.contains(event.target as Node) && !optionList.contains(event.target as Node)) toggleDropdown(false); });
+
+    const updatePricingSummary = () => {
+      const selectedService = pricingServices.find((service) => service.key === serviceSelect.value);
+      const selectedWork = workOptions[Number(workSelect.value)];
+      const selectedPricing = pricingOptions[Number(pricingSelect.value)];
+      const category = root.querySelector<HTMLElement>('[data-summary-category]');
+      const price = root.querySelector<HTMLElement>('[data-summary-price]');
+      const mode = root.querySelector<HTMLElement>('[data-summary-mode]');
+      const total = root.querySelector<HTMLElement>('[data-summary-total]');
+      if (!selectedService || !selectedWork || !selectedPricing || !category || !price || !mode || !total) return;
+      const finalPrice = Math.round(selectedService.basePrice * selectedPricing.multiplier * selectedWork.multiplier);
+      category.textContent = selectedService.name;
+      price.textContent = formatCurrency(selectedService.basePrice);
+      mode.textContent = selectedWork.name;
+      total.textContent = formatCurrency(finalPrice);
+      currentOrder = { service: selectedService.name, workOption: selectedWork.name, finalPrice: formatCurrency(finalPrice) };
+    };
+    [serviceSelect, pricingSelect, workSelect].forEach((input) => input.addEventListener('change', updatePricingSummary));
+    [nameInput, detailInput, linkInput].forEach((input) => { input.addEventListener('input', updatePricingSummary); });
+    updatePricingSummary();
+
+    whatsappButton.addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      const detail = detailInput.value.trim();
+      if (!name || !detail) { validation.hidden = false; nameInput.focus(); return; }
+      validation.hidden = true;
+      const link = linkInput.value.trim();
+      const message = `Halo Matrix Sync! Saya mau order jasa nih.\n\n*Detail Order:*\n- *Nama Panggilan:* ${name}\n- *Service:* ${currentOrder.service}\n- *Mode Pengerjaan:* ${currentOrder.workOption}\n- *Estimasi Harga:* ${currentOrder.finalPrice}\n\n*Brief/Detail Tugas:*\n${detail}\n\n*Link Material:*\n${link || 'No material link provided.'}\n\nMohon dibantu ya!`;
+      window.open(`https://wa.me/6285187732004?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    });
+  };
+
+  const calculator = document.querySelector<HTMLElement>('[data-pricing-calculator]');
+  if (calculator && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => { if (entries.some((entry) => entry.isIntersecting)) { start(); observer.disconnect(); } }, { rootMargin: '200px' });
+    observer.observe(calculator);
+  } else start();
+</script>

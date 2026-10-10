@@ -1,0 +1,22 @@
+---
+const tools = ['WordPress', 'Next.js', 'Express', 'React + Vite', 'Astro', 'Vue', 'Laravel', 'Python', 'Flutter', 'React Native'];
+const toolTrack = [...tools, ...tools];
+---
+<section id="tech-stack" class="tech-stack" aria-labelledby="tech-stack-heading">
+  <div class="container tech-stack-header">
+    <p class="mono-label">[ TOOLS &amp; TECHNOLOGY ]</p>
+    <h2 id="tech-stack-heading">Tools &amp; Tech Stack Solution</h2>
+    <p>We adapt the right technology to fit your specific needs, budget, and scale. From rapid deployments to robust enterprise systems.</p>
+  </div>
+  <div class="tech-stack-marquee">
+    <div class="tools-slider" aria-hidden="true">
+      {toolTrack.map((tool) => <span class="tool-wordmark">{tool}</span>)}
+    </div>
+  </div>
+  <div class="container tech-stack-grid">
+    <article class="tech-stack-card"><i class="fa-solid fa-bolt" aria-hidden="true"></i><h3>Fast &amp; Affordable Web</h3><p>Utilizing WordPress for cheap, easy, and rapid development. For cooler, more complex but premium scale, we use Next.js and Express to deliver flawless performance.</p></article>
+    <article class="tech-stack-card"><i class="fa-solid fa-server" aria-hidden="true"></i><h3>Secure Hosting &amp; VPS</h3><p>Deploying React+Vite, Astro, Vue, and Laravel seamlessly on secure shared hosting or dedicated VPS. Ensuring maximum uptime, security, and blazing fast apps.</p></article>
+    <article class="tech-stack-card"><i class="fa-solid fa-brain" aria-hidden="true"></i><h3>Data &amp; Machine Learning</h3><p>Harnessing Python for data analysts and machine learning engineering. Turning raw data into valuable insights and intelligent automated systems that scale.</p></article>
+    <article class="tech-stack-card"><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i><h3>Native Mobile Apps</h3><p>Transforming static websites into downloadable applications for iOS and Android using Flutter and React Native, delivering a seamless native mobile experience.</p></article>
+  </div>
+</section>

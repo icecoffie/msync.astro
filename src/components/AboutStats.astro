@@ -1,0 +1,58 @@
+---
+import type { Locale } from '../i18n/types';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'id' } = Astro.props;
+const isId = locale === 'id';
+---
+<section class="about-stats" aria-labelledby="about-stats-heading">
+  <div class="about-stats-icons" aria-hidden="true">
+    <i class="fas fa-rocket"></i><i class="fas fa-seedling"></i><i class="fas fa-mug-hot"></i><i class="fas fa-code"></i><i class="fas fa-cookie-bite"></i><i class="fas fa-glass-water-droplet"></i><i class="fas fa-radiation"></i><i class="fas fa-cubes"></i><i class="fas fa-poop"></i><i class="fas fa-feather-pointed"></i><i class="fas fa-terminal"></i>
+  </div>
+  <div class="container about-stats-inner">
+    <img class="section-art section-art-about" src="/projects/me.webp" alt="" aria-hidden="true" loading="lazy" />
+    <div class="about-stats-grid">
+      <article class="stat-box"><h3><span class="counter" data-target="1000" data-decimals="0">1000</span>+</h3><p>{isId ? 'Klien di Berbagai Negara' : 'Clients Worldwide'}</p></article>
+      <article class="stat-box"><h3><span class="counter" data-target="5" data-decimals="1">5.0</span> <span aria-label={isId ? 'bintang' : 'stars'}>⭐</span></h3><p>{isId ? 'Rating Keseluruhan' : 'Overall Rating'}</p></article>
+      <article class="stat-box"><h3><span class="counter" data-target="100" data-decimals="0">100</span>%</h3><p>{isId ? 'Proyek Sukses &amp; Bergaransi' : 'Successful &amp; Guaranteed Projects'}</p></article>
+    </div>
+    <h2 id="about-stats-heading">{isId ? 'MATRIX SYNC, misi kami adalah mengubah lanskap digital yang kompleks menjadi ekosistem yang selaras dan terpadu untuk mewujudkan visi Anda.' : "MATRIX SYNC, our mission is to transform today's complex digital landscape into a perfectly synchronized and cohesive ecosystem that empowers your vision."}</h2>
+    <p class="about-stats-copy">{isId ? 'Dipercaya lebih dari 1000 klien di Indonesia dan mancanegara, kami merancang ekosistem teknologi yang rapi, tangguh, dan siap mendorong pertumbuhan.' : 'Trusted by over 1000 clients in Indonesia and worldwide, we engineer seamless, robust technology ecosystems designed for tangible growth and lasting success.'}</p>
+  </div>
+</section>
+
+<script>
+  const counters = document.querySelectorAll<HTMLElement>('.about-stats .counter');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const element = entry.target as HTMLElement;
+      const target = Number(element.dataset.target || 0);
+      const decimals = Number(element.dataset.decimals || 0);
+      if (prefersReducedMotion) {
+        element.textContent = target.toFixed(decimals);
+        observer.unobserve(element);
+        return;
+      }
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+      const updateCounter = () => {
+        current += step;
+        if (current < target) {
+          element.textContent = current.toFixed(decimals);
+          requestAnimationFrame(updateCounter);
+        } else {
+          element.textContent = target.toFixed(decimals);
+        }
+      };
+      updateCounter();
+      observer.unobserve(element);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach((counter) => observer.observe(counter));
+</script>

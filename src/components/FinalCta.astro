@@ -1,0 +1,18 @@
+---
+import type { Locale } from '../i18n/types';
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = locale === 'id'
+  ? { label: '[ LANGKAH TERAKHIR ]', title: 'Berhenti Buang Budget ke Website yang Bocor Konversinya. Mulai Benerin Sekarang.', consult: 'Konsultasi Gratis', portfolio: 'Lihat Portofolio' }
+  : { label: '[ THE NEXT MOVE ]', title: 'Stop Spending Budget on a Website That Leaks Conversions. Fix It Now.', consult: 'Free Consultation', portfolio: 'View Portfolio' };
+const portfolioHref = locale === 'id' ? '/#work' : '/en/#work';
+const whatsappMessage = locale === 'id' ? 'Halo Matrix Sync, saya ingin konsultasi gratis tentang website saya.' : 'Hello Matrix Sync, I would like a free consultation about my website.';
+---
+<section class="final-cta" aria-labelledby="final-cta-heading">
+  <div class="container final-cta-inner">
+    <p class="mono-label">{copy.label}</p>
+    <h2 id="final-cta-heading">{copy.title}</h2>
+    <div class="final-cta-actions"><a class="button button-primary" href={`https://wa.me/6285187732004?text=${encodeURIComponent(whatsappMessage)}`} target="_blank" rel="noreferrer">{copy.consult} <span aria-hidden="true">↗</span></a><a class="button final-cta-outline" href={portfolioHref}>{copy.portfolio} <span aria-hidden="true">↗</span></a></div>
+  </div>
+</section>

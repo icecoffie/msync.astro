@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+type TestimonialData = { author_name: string; author_role: string; stars: number; quote: string };
+const testimonials = await getCollection('testimonials') as Array<{ data: TestimonialData }>;
+const testimonialItems = testimonials.map((entry: { data: TestimonialData }) => entry.data);
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character] || character);
+const testimonialMarkup = testimonialItems.map((data: TestimonialData) => `<article class="testimonial-slide"><div class="testimonial-stars" aria-label="${data.stars} stars">${'★'.repeat(data.stars)}</div><blockquote>“${escapeHtml(data.quote)}”</blockquote><p class="testimonial-author">${escapeHtml(data.author_name)}</p><p class="testimonial-role">${escapeHtml(data.author_role)}</p></article>`).join('');
+---
+<section class="testimonials-section" aria-labelledby="testimonials-heading">
+  <div class="container testimonials-inner">
+    <p class="mono-label">[ CLIENT VOICES ]</p>
+    <h2 id="testimonials-heading">What Our Clients Say</h2>
+    <div class="testimonial-slider-shell">
+      <div class="testimonial-slider-track testimonial-track" set:html={testimonialMarkup}></div>
+    </div>
+    <div class="testimonial-slider-controls"><button class="testimonial-slider-button" type="button" data-testimonial-prev aria-label="Previous testimonial">‹</button><button class="testimonial-slider-button" type="button" data-testimonial-next aria-label="Next testimonial">›</button></div>
+    <a class="button button-primary testimonials-cta" href="https://testy.msync.my.id" target="_blank" rel="noreferrer">Read More Testimonials <span aria-hidden="true">↗</span></a>
+  </div>
+</section>
+
+<script>
+  const testimonialTrack = document.querySelector<HTMLElement>('.testimonial-track');
+  const testimonialSlides = testimonialTrack?.querySelectorAll<HTMLElement>('.testimonial-slide');
+  const testimonialPrev = document.querySelector<HTMLButtonElement>('[data-testimonial-prev]');
+  const testimonialNext = document.querySelector<HTMLButtonElement>('[data-testimonial-next]');
+  if (testimonialTrack && testimonialSlides?.length && testimonialPrev && testimonialNext) {
+    let currentIndex = 0;
+    const updateTestimonialSlider = () => { testimonialTrack.style.transform = `translateX(${-currentIndex * 100}%)`; };
+    testimonialNext.addEventListener('click', () => { currentIndex = (currentIndex + 1) % testimonialSlides.length; updateTestimonialSlider(); });
+    testimonialPrev.addEventListener('click', () => { currentIndex = (currentIndex - 1 + testimonialSlides.length) % testimonialSlides.length; updateTestimonialSlider(); });
+  }
+</script>

@@ -1,0 +1,11 @@
+---
+import InnerPage from '../../../components/InnerPage.astro';
+import Services from '../../../components/Services.astro';
+import TechStack from '../../../components/TechStack.astro';
+import WhyChooseUs from '../../../components/WhyChooseUs.astro';
+import { en as copy } from '../../../i18n/en';
+const locale = 'en' as const;
+const alternates = { id: '/layanan/', en: '/en/services/' };
+const seo = { title: 'Web Development & Product Design Services | Matrix Sync', description: 'Custom web app development, UI/UX design, e-commerce, cloud, and security services for international teams.', canonical: 'https://msync.web.id/en/services/', ogTitle: 'Matrix Sync Digital Services', ogDescription: 'Websites, applications, product design, and infrastructure for growing teams.', ogImage: 'https://msync.web.id/logo.webp', twitterTitle: 'Matrix Sync Services', twitterDescription: 'Build digital products with an Indonesia based software agency.', keywords: 'custom web app development company, affordable web development agency, outsource web development Southeast Asia' };
+---
+<InnerPage locale={locale} copy={copy} seo={seo} alternates={alternates} eyebrow="[ SERVICES ]" title="Start where your business needs momentum." intro="From design to deployment, we help you build digital experiences that are easier to find, understand, and act on."><Services /><TechStack /><WhyChooseUs /></InnerPage>
